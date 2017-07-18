@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AppGlue.Api.Database;
+using AppGlue.Api.Database.DemoData;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,6 +18,8 @@ namespace AppGlue.Api.AppStartup
             services.AddDbContext<AppGlueDbContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
 
+            services.AddSingleton<IDemoDataPopulator, DemoDataPopulator>();
+
             return services;
         }
 
@@ -28,6 +31,7 @@ namespace AppGlue.Api.AppStartup
                 using (var db = provider.GetService<AppGlueDbContext>())
                 {
                     db.Database.Migrate();
+                    provider.GetService<IDemoDataPopulator>().Load();
                 }
             }
 
