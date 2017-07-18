@@ -29,6 +29,9 @@ namespace AppGlue.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCustomDbContext(Configuration);
+            services.AddCustomMapping();
+            services.AddCustomMediatr();
+
             services.AddMvc();
         }
 
